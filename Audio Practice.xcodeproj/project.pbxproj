@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6130F5FB1D30239B006E016C /* white sound.png in Resources */ = {isa = PBXBuildFile; fileRef = 6130F5FA1D30239B006E016C /* white sound.png */; };
+		6130F5FD1D30246B006E016C /* white mute.png in Resources */ = {isa = PBXBuildFile; fileRef = 6130F5FC1D30246B006E016C /* white mute.png */; };
+		6130F6001D302579006E016C /* white pause.png in Resources */ = {isa = PBXBuildFile; fileRef = 6130F5FE1D302579006E016C /* white pause.png */; };
+		6130F6011D302579006E016C /* white play.png in Resources */ = {isa = PBXBuildFile; fileRef = 6130F5FF1D302579006E016C /* white play.png */; };
 		61F2DBAB1D3010870094867B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F2DBAA1D3010870094867B /* AppDelegate.swift */; };
 		61F2DBAD1D3010870094867B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F2DBAC1D3010870094867B /* ViewController.swift */; };
 		61F2DBB01D3010870094867B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 61F2DBAE1D3010870094867B /* Main.storyboard */; };
@@ -17,6 +21,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6130F5FA1D30239B006E016C /* white sound.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "white sound.png"; sourceTree = "<group>"; };
+		6130F5FC1D30246B006E016C /* white mute.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "white mute.png"; sourceTree = "<group>"; };
+		6130F5FE1D302579006E016C /* white pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "white pause.png"; sourceTree = "<group>"; };
+		6130F5FF1D302579006E016C /* white play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "white play.png"; sourceTree = "<group>"; };
 		61F2DBA71D3010870094867B /* Audio Practice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Audio Practice.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		61F2DBAA1D3010870094867B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		61F2DBAC1D3010870094867B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ViewController.swift; sourceTree = "<group>"; usesTabs = 0; };
@@ -63,6 +71,10 @@
 				61F2DBAA1D3010870094867B /* AppDelegate.swift */,
 				61F2DBAC1D3010870094867B /* ViewController.swift */,
 				61F2DBBC1D3010CD0094867B /* Tyga - Hijack.mp3 */,
+				6130F5FA1D30239B006E016C /* white sound.png */,
+				6130F5FC1D30246B006E016C /* white mute.png */,
+				6130F5FE1D302579006E016C /* white pause.png */,
+				6130F5FF1D302579006E016C /* white play.png */,
 				61F2DBAE1D3010870094867B /* Main.storyboard */,
 				61F2DBB11D3010870094867B /* Assets.xcassets */,
 				61F2DBB31D3010870094867B /* LaunchScreen.storyboard */,
@@ -131,9 +143,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6130F6011D302579006E016C /* white play.png in Resources */,
 				61F2DBBD1D3010CD0094867B /* Tyga - Hijack.mp3 in Resources */,
+				6130F6001D302579006E016C /* white pause.png in Resources */,
+				6130F5FB1D30239B006E016C /* white sound.png in Resources */,
 				61F2DBB51D3010870094867B /* LaunchScreen.storyboard in Resources */,
 				61F2DBB21D3010870094867B /* Assets.xcassets in Resources */,
+				6130F5FD1D30246B006E016C /* white mute.png in Resources */,
 				61F2DBB01D3010870094867B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
