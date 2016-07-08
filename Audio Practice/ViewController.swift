@@ -7,12 +7,37 @@
 //
 
 import UIKit
+import AVFoundation
 
 class ViewController: UIViewController {
-
+    
+    @IBOutlet var musicVolumeSlider: UISlider!
+    
+    @IBAction func playMusicButton(_ sender: UIButton) {
+        player.play()
+    }
+    
+    @IBAction func pauseMusicButton(_ sender: UIButton) {
+        player.pause()
+    }
+    
+    @IBAction func adjustMusicVolume(_ sender: UISlider) {
+        player.volume = musicVolumeSlider.value
+    }
+    
+    var player: AVAudioPlayer = AVAudioPlayer() //controls music
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        let audioPath = Bundle.main().pathForResource("Tyga - Hijack", ofType: "mp3")!
+        
+        do {
+            try player = AVAudioPlayer(contentsOf: URL (fileURLWithPath: audioPath))
+            player.play()
+        } catch {
+            print ("process error here")
+        }
     }
 
     override func didReceiveMemoryWarning() {
