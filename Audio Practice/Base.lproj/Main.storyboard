@@ -9,6 +9,15 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
+                <searchDisplayController id="K01-9l-1LH">
+                    <connections>
+                        <outlet property="delegate" destination="BYZ-38-t0r" id="1w6-DV-8PS"/>
+                        <outlet property="searchContentsController" destination="BYZ-38-t0r" id="Rlq-M0-hMd"/>
+                        <outlet property="searchResultsDataSource" destination="BYZ-38-t0r" id="d2O-5U-aH7"/>
+                        <outlet property="searchResultsDelegate" destination="BYZ-38-t0r" id="VVG-sd-HFY"/>
+                    </connections>
+                </searchDisplayController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Audio_Practice" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
@@ -18,30 +27,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="dAA-dz-yEE">
-                                <frame key="frameInset" minX="58" minY="34" width="142" height="31"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="franklin yu 3.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="TAo-5E-UgI">
+                                <frame key="frameInset" width="375" height="618"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="minimumTrackTintColor" red="0.090196078431372548" green="0.68627450980392157" blue="0.015686274509803921" alpha="1" colorSpace="calibratedRGB"/>
-                                <connections>
-                                    <action selector="adjustMusicVolume:" destination="BYZ-38-t0r" eventType="valueChanged" id="dqD-uA-0a8"/>
-                                </connections>
-                            </slider>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n17-Gu-CQY">
-                                <frame key="frameInset" minX="16" minY="480" width="55" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Audio Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b58-YZ-TPQ">
-                                <frame key="frameInset" minX="54" minY="547" width="267" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </label>
+                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="92R-QC-eHy">
-                                <frame key="frameInset" minX="157" minY="587" width="60" height="60"/>
+                                <frame key="frameInset" minX="147" minY="299" width="80" height="80"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="white play.png"/>
                                 <connections>
@@ -49,65 +40,174 @@
                                 </connections>
                             </button>
                             <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="syo-GC-Chf">
-                                <frame key="frameInset" minX="14" minY="509" width="347" height="31"/>
+                                <frame key="frameInset" minX="21" minY="240" width="332" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="minimumTrackTintColor" red="0.0" green="0.6899145703131313" blue="0.00021119926544478529" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="minimumTrackTintColor" red="0.098039215686274508" green="0.83137254901960789" blue="0.28235294117647058" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="thumbTintColor" red="0.098039215686274508" green="0.83137254901960789" blue="0.28235294117647058" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <action selector="musicTime:" destination="BYZ-38-t0r" eventType="valueChanged" id="eBa-5b-b2y"/>
                                 </connections>
                             </slider>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rc1-VI-DYh">
-                                <frame key="frameInset" minX="300" minY="480" width="59" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="white sound.png" translatesAutoresizingMaskIntoConstraints="NO" id="Vbn-ip-jHt">
-                                <frame key="frameInset" minX="16" minY="34" width="30" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
                             <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="ntp-zS-4eO">
-                                <frame key="frameInset" minX="58" minY="82" width="142" height="31"/>
+                                <frame key="frameInset" minX="21" minY="566" width="251" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="minimumTrackTintColor" red="0.098039215686274508" green="0.83137254901960789" blue="0.28235294117647058" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="thumbTintColor" red="0.098039215686274508" green="0.83137254901960789" blue="0.28235294117647058" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <action selector="adjustMusicRate:" destination="BYZ-38-t0r" eventType="valueChanged" id="Ew7-Ud-FxH"/>
                                 </connections>
                             </slider>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Rate " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gx4-Ho-EZX">
-                                <frame key="frameInset" minX="218" minY="87" width="103" height="21"/>
+                                <frame key="frameInset" minX="297" minY="571" width="60" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="15"/>
+                                <color key="textColor" red="0.10980392156862745" green="0.83137254901960789" blue="0.28235294117647058" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rc1-VI-DYh">
+                                <frame key="frameInset" minX="297" minY="270" width="59" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tQX-fj-exp">
+                                <frame key="frameInset" minX="240" minY="324" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="white forward.png"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uw9-Ud-0pF">
+                                <frame key="frameInset" minX="93" minY="319" width="40" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="white rewind.png"/>
+                                <connections>
+                                    <action selector="rewindMusicButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="nCc-px-Bzn"/>
+                                </connections>
+                            </button>
+                            <tabBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="u5q-9D-4rw">
+                                <frame key="frameInset" height="49"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <items>
+                                    <tabBarItem systemItem="search" id="qp8-xu-Hfy"/>
+                                    <tabBarItem systemItem="more" id="352-jc-xME"/>
+                                    <tabBarItem systemItem="downloads" id="xAt-SH-wvr" userLabel="Home"/>
+                                </items>
+                                <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </tabBar>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Vol" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6M1-lj-tYx">
+                                <frame key="frameInset" minX="297" minY="497" width="60" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="15"/>
+                                <color key="textColor" red="0.10980392156862745" green="0.83137254901960789" blue="0.28235294117647058" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="dAA-dz-yEE" userLabel="Music Volume Slider">
+                                <frame key="frameInset" minX="21" minY="492" width="251" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="minimumTrackTintColor" red="0.098039215686274508" green="0.83137254901960789" blue="0.28235294117647058" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="thumbTintColor" red="0.098039215686274508" green="0.83137254901960789" blue="0.28235294117647058" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <action selector="adjustMusicVolume:" destination="BYZ-38-t0r" eventType="valueChanged" id="lI6-hx-i1E"/>
+                                </connections>
+                            </slider>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n17-Gu-CQY">
+                                <frame key="frameInset" minX="23" minY="270" width="90" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YHq-9Q-kJE">
+                                <frame key="frameInset" minX="314" minY="327" width="29" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="white repeat.png"/>
+                                <connections>
+                                    <action selector="loopMusicButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="F0i-Vg-DO2"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nhu-JD-2gh">
+                                <frame key="frameInset" minX="35" minY="324" width="35" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="white sound.png"/>
+                                <connections>
+                                    <action selector="muteVolumeButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="VPq-nQ-6Ib"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Relative Tempo" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NBO-oz-hej">
+                                <frame key="frameInset" minX="20" minY="539" width="117" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.10980392160000001" green="0.83137254900000002" blue="0.28235294119999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Volume" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hep-Sh-nMz">
+                                <frame key="frameInset" minX="23" minY="465" width="58" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.10980392160000001" green="0.83137254900000002" blue="0.28235294119999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Audio Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b58-YZ-TPQ">
+                                <frame key="frameInset" minX="16" minY="157" width="343" height="39"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="32"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Audio Artist" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JRp-x6-i7B">
+                                <frame key="frameInset" minX="62" minY="196" width="251" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="20"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="white clock.png" translatesAutoresizingMaskIntoConstraints="NO" id="LvC-92-ze7">
-                                <frame key="frameInset" minX="16" minY="82" width="30" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Svc-JM-HGF">
+                                <frame key="frameInset" minX="311" minY="420" width="33" height="28"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="white microphone.png"/>
+                                <connections>
+                                    <action selector="recordMusicButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="oum-qJ-6Pu"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="franklin yu 3.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="3lt-XP-Tca">
+                                <frame key="frameInset" minX="132" minY="37" width="110" height="110"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.10980392156862745" green="0.10588235294117647" blue="0.13725490196078433" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <connections>
+                        <outlet property="loopMusicButtonIcon" destination="YHq-9Q-kJE" id="0BB-mO-nEu"/>
+                        <outlet property="musicArtistLabel" destination="JRp-x6-i7B" id="4jd-TU-CDf"/>
                         <outlet property="musicCurrentTime" destination="n17-Gu-CQY" id="iOC-tl-fZG"/>
                         <outlet property="musicEndTime" destination="rc1-VI-DYh" id="zhP-IT-nir"/>
+                        <outlet property="musicImageView" destination="TAo-5E-UgI" id="su7-f4-2Ss"/>
                         <outlet property="musicRateLabel" destination="Gx4-Ho-EZX" id="vEn-dX-IgT"/>
                         <outlet property="musicRateSlider" destination="ntp-zS-4eO" id="cxk-3H-ygg"/>
                         <outlet property="musicTimeSlider" destination="syo-GC-Chf" id="LoG-dM-9P8"/>
                         <outlet property="musicTitleLabel" destination="b58-YZ-TPQ" id="BzO-KI-gL6"/>
-                        <outlet property="musicVolumeSlider" destination="dAA-dz-yEE" id="g2s-q4-d5g"/>
+                        <outlet property="musicVolumeLabel" destination="6M1-lj-tYx" id="jfl-o8-yZV"/>
+                        <outlet property="musicVolumeSlider" destination="dAA-dz-yEE" id="1rm-jz-Ig5"/>
+                        <outlet property="muteVolumeButtonIcon" destination="nhu-JD-2gh" id="NvP-O3-kGT"/>
                         <outlet property="playPauseButtonIcon" destination="92R-QC-eHy" id="gbv-iE-YnO"/>
-                        <outlet property="volumeIcon" destination="Vbn-ip-jHt" id="9FE-t0-6fV"/>
+                        <outlet property="recordButtonIcon" destination="Svc-JM-HGF" id="4vB-4d-ywP"/>
+                        <outlet property="rewindButtonIcon" destination="uw9-Ud-0pF" id="dMq-QF-FUY"/>
+                        <outlet property="searchDisplayController" destination="K01-9l-1LH" id="RLV-0x-chx"/>
+                        <outlet property="smallMusicImageView" destination="3lt-XP-Tca" id="R7s-BK-eAK"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-466.39999999999998" y="-18.440779610194905"/>
+            <point key="canvasLocation" x="-954.39999999999998" y="29.23538230884558"/>
         </scene>
     </scenes>
     <resources>
-        <image name="white clock.png" width="1000" height="1000"/>
+        <image name="franklin yu 3.jpg" width="2048" height="1132"/>
+        <image name="white forward.png" width="512" height="512"/>
+        <image name="white microphone.png" width="256" height="256"/>
         <image name="white play.png" width="256" height="256"/>
+        <image name="white repeat.png" width="256" height="256"/>
+        <image name="white rewind.png" width="256" height="256"/>
         <image name="white sound.png" width="256" height="256"/>
     </resources>
 </document>
