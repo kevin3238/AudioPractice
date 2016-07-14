@@ -11,8 +11,9 @@
 
 import UIKit
 import AVFoundation
+import MediaPlayer
 
-class ViewController: UIViewController, AVAudioRecorderDelegate {
+class ViewController: UIViewController, AVAudioRecorderDelegate, MPMediaPickerControllerDelegate {
     
     var player: AVAudioPlayerNode!
     var audioEngine:AVAudioEngine!
@@ -55,6 +56,13 @@ class ViewController: UIViewController, AVAudioRecorderDelegate {
 //    @IBOutlet var musicImageView: UIImageView!
     @IBOutlet var musicImageView: UIImageView!
     @IBOutlet var smallMusicImageView: UIImageView!
+    
+    //MediaPicker vars
+//    var mediaPicker: MPMediaPickerController?
+//    var myMusicPlayer: MPMusicPlayerController?
+//    let masterVolumeSlider: MPVolumeView = MPVolumeView()
+
+    //func mediaPicker(mediaPicker:)
     
     @IBAction func playPauseButton(_ sender: UIButton) {
         if player.isPlaying {
@@ -103,7 +111,24 @@ class ViewController: UIViewController, AVAudioRecorderDelegate {
 //    }
     
     @IBAction func rewindMusicButton(_ sender: UIButton) {
-        audioFile.framePosition = 15898752
+        var nodetime: AVAudioTime  = player.lastRenderTime!
+        let playerTime: AVAudioTime = player.playerTime(forNodeTime: nodetime)!
+        var sampleRate = playerTime.sampleRate
+        
+        var newsampletime = AVAudioFramePosition(sampleRate * Double(musicTimeSlider.value))
+        
+        var length = Float(endTimeMusic!)
+        var framestoplay = AVAudioFrameCount(Float(playerTime.sampleRate) * length)
+        
+        player.stop()
+        
+        if framestoplay > 100 {
+            player.scheduleSegment(audioFile, startingFrame: newsampletime, frameCount: framestoplay, at: nil,completionHandler: nil)
+        }
+        
+        player.play()
+        
+        
     }
     
 //    @IBAction func recordMusicButton(_ sender: UIButton) {
@@ -193,9 +218,23 @@ class ViewController: UIViewController, AVAudioRecorderDelegate {
     }
     
     //manual control of music time
-    // *** need to display 2 decimals past seconds
     @IBAction func musicTime(_ sender: UISlider) {
-        currentTimeMusic = musicTimeSlider.value
+        
+        let newsampletime = AVAudioFramePosition(playerTime.sampleRate * Double(musicTimeSlider.value))
+        let length = Float(endTimeMusic!) - musicTimeSlider.value
+        let framestoplay = AVAudioFrameCount(Float(playerTime.sampleRate) * length)
+        currentTimeMusic = Float(Double(newsampletime) / playerTime.sampleRate)
+        player.stop()
+        
+        if framestoplay > 100 {
+            player.scheduleSegment(audioFile, startingFrame: newsampletime, frameCount: framestoplay, at: nil,completionHandler: nil)
+        }
+        
+        player.play()
+        print(currentTimeMusic)
+//        musicTimeSlider.value = currentTimeMusic
+        
+        print(player.lastRenderTime)
         
         let currentTimeMin:Int = Int(currentTimeMusic)/60
         let currentTimeSec:Int = Int(currentTimeMusic) % 60
@@ -228,12 +267,11 @@ class ViewController: UIViewController, AVAudioRecorderDelegate {
     
     // slider updates as the music progresses
     func updateMusicTimeSlider() {
-//        print (player.isPlaying)
-//        print(currentTimeMusic)
-//        print(audioFile.framePosition)
-        currentTimeMusic = currentTimeMusic + 0.01
         if (player.isPlaying) {
             playPauseButtonIcon.setImage(#imageLiteral(resourceName: "white pause 2"), for: [])
+            nodeTime = self.player.lastRenderTime
+            playerTime = player.playerTime(forNodeTime: nodeTime)
+            currentTimeMusic = Float(Double(playerTime.sampleTime) / playerTime.sampleRate)
         } else {
             playPauseButtonIcon.setImage(#imageLiteral(resourceName: "white play"), for: [])
         }
@@ -287,12 +325,7 @@ class ViewController: UIViewController, AVAudioRecorderDelegate {
         }
         
         changeAudio = AVAudioUnitTimePitch()
-        
-        //
-        changeAudio.pitch = 1.0 //Distortion
-        changeAudio.rate = 1.0 //Voice speed
-        //
-        
+
         audioEngine.attach(player)
         audioEngine.attach(changeAudio)
         audioEngine.connect(player, to: changeAudio, format: buffer.format)
@@ -313,7 +346,9 @@ class ViewController: UIViewController, AVAudioRecorderDelegate {
         currentTimeMusic = Float(Double(playerTime.sampleTime) / playerTime.sampleRate)
         print (currentTimeMusic)
         
-        endTimeMusic = Float (Float(audioFile.length) / 44100.0)
+        endTimeMusic = Float (Float(audioFile.length) / Float(playerTime.sampleRate))
+        
+//        player.pause()
         
         musicTitleLabel.text = "ACA Bridge Fall 2014"
         musicArtistLabel.text = "TungFuHustle"
@@ -379,7 +414,7 @@ class ViewController: UIViewController, AVAudioRecorderDelegate {
         //applying blur to musicImageView
         let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
-        blurEffectView.alpha = 0.9
+        blurEffectView.alpha = 0.95
         blurEffectView.frame = musicImageView.bounds
         musicImageView.addSubview(blurEffectView)
         
