@@ -365,7 +365,7 @@ class ViewController: UIViewController, AVAudioRecorderDelegate {
         changeAudio.pitch = 1.0
         musicPitchSlider.value = changeAudio.pitch
         musicPitchSlider.minimumValue = -1200
-        musicPitchSlider.maximumValue = 1200
+        musicPitchSlider.maximumValue = 2400
         musicPitchLabel.text = "1 c"
         
         //setting rate
