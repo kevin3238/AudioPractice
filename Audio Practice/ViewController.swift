@@ -21,7 +21,8 @@ class ViewController: UIViewController, AVAudioRecorderDelegate {
     
     var nodeTime:AVAudioTime!
     var playerTime:AVAudioTime!
-    var songDuration:TimeInterval!
+    var currentTimeMusic:Float!
+    var endTimeMusic:Float!
     
     var isRecording:Bool = false
     var isRepeat:Bool = false
@@ -32,6 +33,7 @@ class ViewController: UIViewController, AVAudioRecorderDelegate {
     
     @IBOutlet var musicTitleLabel: UILabel!
     @IBOutlet var musicArtistLabel: UILabel!
+    @IBOutlet var musicPitchLabel: UILabel!
     @IBOutlet var musicRateLabel: UILabel!
     @IBOutlet var musicVolumeLabel: UILabel!
     
@@ -48,6 +50,7 @@ class ViewController: UIViewController, AVAudioRecorderDelegate {
     @IBOutlet var musicVolumeSlider: UISlider!
     @IBOutlet var musicTimeSlider: UISlider!
     @IBOutlet var musicRateSlider: UISlider!
+    @IBOutlet var musicPitchSlider: UISlider!
     
 //    @IBOutlet var musicImageView: UIImageView!
     @IBOutlet var musicImageView: UIImageView!
@@ -66,6 +69,7 @@ class ViewController: UIViewController, AVAudioRecorderDelegate {
     @IBAction func muteVolumeButton(_ sender: UIButton) {
         if (isMuted) {
             musicVolumeLabel.text = String(Int(Float(lastVolume)*100))
+            musicVolumeLabel.text?.append(" %")
             musicVolumeSlider.value = Float(Float(lastVolume)*100)
             player.volume = lastVolume
             muteVolumeButtonIcon.setImage(#imageLiteral(resourceName: "white sound"), for: [])
@@ -83,23 +87,23 @@ class ViewController: UIViewController, AVAudioRecorderDelegate {
     @IBAction func resetMusicRateButton(_ sender: UIButton) {
         musicRateLabel.text = "1.0x"
         musicRateSlider.value = 1.0
-        player.rate = 1.0
+        changeAudio.rate = 1.0
     }
-    
-    @IBAction func loopMusicButton(_ sender: UIButton) {
-        if isRepeat {
-            loopMusicButtonIcon.setImage(#imageLiteral(resourceName: "white infinity"), for: [])
-            player.numberOfLoops = 0
-            isRepeat = false
-        } else {
-            loopMusicButtonIcon.setImage(#imageLiteral(resourceName: "green infinity"), for: [])
-            player.numberOfLoops = numberLoops
-            isRepeat = true
-        }
-    }
+   
+//    @IBAction func loopMusicButton(_ sender: UIButton) {
+//        if isRepeat {
+//            loopMusicButtonIcon.setImage(#imageLiteral(resourceName: "white infinity"), for: [])
+//            player.numberOfLoops = 0
+//            isRepeat = false
+//        } else {
+//            loopMusicButtonIcon.setImage(#imageLiteral(resourceName: "green infinity"), for: [])
+//            player.numberOfLoops = numberLoops
+//            isRepeat = true
+//        }
+//    }
     
     @IBAction func rewindMusicButton(_ sender: UIButton) {
-        player.reset()
+        audioFile.framePosition = 15898752
     }
     
 //    @IBAction func recordMusicButton(_ sender: UIButton) {
@@ -135,6 +139,7 @@ class ViewController: UIViewController, AVAudioRecorderDelegate {
     @IBAction func adjustMusicVolume(_ sender: UISlider) {
         player.volume = Float(musicVolumeSlider.value / 100.0)
         musicVolumeLabel.text = String(Int(musicVolumeSlider.value))
+        musicVolumeLabel.text?.append(" %")
         if musicVolumeSlider.value == 0.0 {
             muteVolumeButtonIcon.setImage(#imageLiteral(resourceName: "white mute"), for: [])
         } else {
@@ -142,11 +147,39 @@ class ViewController: UIViewController, AVAudioRecorderDelegate {
         }
     }
    
+    @IBAction func adjustMusicPitch(_ sender: UISlider) {
+        changeAudio.pitch = musicPitchSlider.value
+        let musicPitchRaw: String = String(musicPitchSlider.value)
+        
+        var count = 0;
+        print (musicPitchRaw)
+        for char in musicPitchRaw.characters {
+            if char == "." {
+                let musicPitchIndex = musicPitchRaw.index(musicPitchRaw.startIndex, offsetBy: count)
+                let musicPitch:String = musicPitchRaw.substring(to: musicPitchIndex)
+                musicPitchLabel.text = musicPitch
+            } else {
+                count+=1
+            }
+        }
+//        print(count)
+//
+//        if (musicPitchRaw.characters.count < 5) {
+//            musicPitchLabel.text = musicPitchRaw
+//        }
+//        else if (musicPitchRaw.characters.count >= 5) {
+//            let musicPitchIndex = musicPitchRaw.index(musicPitchRaw.startIndex, offsetBy: 4)
+//            let musicPitch:String = musicPitchRaw.substring(to: musicPitchIndex)
+//            musicPitchLabel.text = musicPitch
+//        }
+        musicPitchLabel.text?.append(" c")
+        
+    }
     
     //manual control of music rate
     // *** need to change string to only display 2 numbers past decimal
     @IBAction func adjustMusicRate(_ sender: UISlider) {
-        player.rate = musicRateSlider.value
+        changeAudio.rate = musicRateSlider.value
         var musicRateRaw: String = String(musicRateSlider.value)
         if (musicRateRaw.characters.count < 5) {
             musicRateLabel.text = musicRateRaw
@@ -156,18 +189,18 @@ class ViewController: UIViewController, AVAudioRecorderDelegate {
             let musicRate:String = musicRateRaw.substring(to: musicRateIndex)
             musicRateLabel.text = musicRate
         }
-        musicRateLabel.text?.append("x")
+        musicRateLabel.text?.append(" x")
     }
     
     //manual control of music time
     // *** need to display 2 decimals past seconds
     @IBAction func musicTime(_ sender: UISlider) {
-        player.currentTime = TimeInterval (musicTimeSlider.value)
+        currentTimeMusic = musicTimeSlider.value
         
-        let currentTimeMin:Int = Int(songDuration)/60
-        let currentTimeSec:Int = Int(songDuration) % 60
+        let currentTimeMin:Int = Int(currentTimeMusic)/60
+        let currentTimeSec:Int = Int(currentTimeMusic) % 60
         
-        let ms = player.currentTime.truncatingRemainder(dividingBy: 1.0) * 1000
+        let ms = currentTimeMusic.truncatingRemainder(dividingBy: 1.0) * 1000
         
         var currentTimeMil: String = String(ms)
         if (currentTimeMil.characters.count > 3) {
@@ -195,17 +228,21 @@ class ViewController: UIViewController, AVAudioRecorderDelegate {
     
     // slider updates as the music progresses
     func updateMusicTimeSlider() {
+//        print (player.isPlaying)
+//        print(currentTimeMusic)
+//        print(audioFile.framePosition)
+        currentTimeMusic = currentTimeMusic + 0.01
         if (player.isPlaying) {
             playPauseButtonIcon.setImage(#imageLiteral(resourceName: "white pause 2"), for: [])
         } else {
             playPauseButtonIcon.setImage(#imageLiteral(resourceName: "white play"), for: [])
         }
-        musicTimeSlider.value = Float (songDuration)
+        musicTimeSlider.value = Float (currentTimeMusic)
         
-        let currentTimeMin:Int = Int(songDuration)/60
-        let currentTimeSec:Int = Int(songDuration) % 60
+        let currentTimeMin:Int = Int(currentTimeMusic)/60
+        let currentTimeSec:Int = Int(currentTimeMusic) % 60
         
-        let ms = songDuration.truncatingRemainder(dividingBy: 1.0) * 1000
+        let ms = currentTimeMusic.truncatingRemainder(dividingBy: 1.0) * 1000
         
         var currentTimeMil: String = String(ms)
         if (currentTimeMil.characters.count > 3) {
@@ -230,61 +267,6 @@ class ViewController: UIViewController, AVAudioRecorderDelegate {
         musicCurrentTime.text?.append(currentTimeMil)
     }
     
-//    func loadRecordingUI() {
-//        recordButtonIcon = UIButton(frame: CGRect(x: 64, y: 64, width: 128, height: 64))
-//        recordButtonIcon.setTitle("Tap to Record", for: [])
-//        recordButtonIcon.titleLabel?.font = UIFont.preferredFont(forTextStyle: UIFontTextStyleTitle1)
-//        recordButtonIcon.addTarget(self, action: #selector(recordTapped), for: .touchUpInside)
-//        view.addSubview(recordButtonIcon)
-//    }
-//    
-//    class func getDocumentsDirectory() -> String {
-//        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-//        let documentsDirectory = paths[0]
-//        return documentsDirectory
-//    }
-    
-//    func startRecording() {
-//        let audioFilename = getDocumentsDirectory().stringByAppendingPathComponent("recording.m4a")
-//        let audioURL = URL(fileURLWithPath: audioFilename)
-//        
-//        let settings = [
-//            AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
-//            AVSampleRateKey: 12000.0,
-//            AVNumberOfChannelsKey: 1 as NSNumber,
-//            AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
-//        ]
-//        
-//        do {
-//            audioRecorder = try AVAudioRecorder(URL: audioURL, settings: settings)
-//            audioRecorder.delegate = self
-//            audioRecorder.record()
-//            
-//            recordButtonIcon.setTitle("Tap to Stop", for: [])
-//        } catch {
-//            finishRecording(false)
-//        }
-//    }
-    
-//    func recordTapped() {
-//        if audioRecorder == nil {
-//            startRecording()
-//        } else {
-//            finishRecording(true)
-//        }
-//    }
-    
-//    func finishRecording(_ success: Bool) {
-//        audioRecorder.stop()
-//        audioRecorder = nil
-//        
-//        if success {
-//            recordButtonIcon.setTitle("Tap to Re-record", for: [])
-//        } else {
-//            recordButtonIcon.setTitle("Tap to Record", for: [])
-//            // recording failed :(
-//        }
-//    }
     
     //figure out how to load music from library
     override func viewDidLoad() {
@@ -328,10 +310,10 @@ class ViewController: UIViewController, AVAudioRecorderDelegate {
         
         nodeTime = self.player.lastRenderTime
         playerTime = player.playerTime(forNodeTime: nodeTime)
-        songDuration = Double(playerTime.sampleTime) / playerTime.sampleRate;
-
-        var 
+        currentTimeMusic = Float(Double(playerTime.sampleTime) / playerTime.sampleRate)
+        print (currentTimeMusic)
         
+        endTimeMusic = Float (Float(audioFile.length) / 44100.0)
         
         musicTitleLabel.text = "ACA Bridge Fall 2014"
         musicArtistLabel.text = "TungFuHustle"
@@ -339,9 +321,9 @@ class ViewController: UIViewController, AVAudioRecorderDelegate {
         
         musicCurrentTime.text = "00:00.00"
         
-        let endTimeMin:Int = Int(songDuration)/60
-        let endTimeSec = Int((songDuration).truncatingRemainder(dividingBy: 60))
-        let endTimeMs = songDuration.truncatingRemainder(dividingBy: 1.0) * 1000
+        let endTimeMin:Int = Int(endTimeMusic)/60
+        let endTimeSec = Int((endTimeMusic).truncatingRemainder(dividingBy: 60))
+        let endTimeMs = endTimeMusic.truncatingRemainder(dividingBy: 1.0) * 1000
         
         var endTimeMil: String = String(endTimeMs)
         if (endTimeMil.characters.count > 3) {
@@ -367,34 +349,48 @@ class ViewController: UIViewController, AVAudioRecorderDelegate {
         musicEndTime.text?.append(".")
         musicEndTime.text?.append(endTimeMil)
         
-        musicTimeSlider.maximumValue = Float(songDuration)
+        //setting music time
+        musicTimeSlider.maximumValue = Float(endTimeMusic)
         musicTimeSlider.value = 0.0
     
-
+        //setting volume
         player.volume = 0.5
         musicVolumeSlider.minimumValue = 0
         musicVolumeSlider.maximumValue = 100
         musicVolumeSlider.value = (player.volume * 100.0)
         musicVolumeLabel.text = String(Int(musicVolumeSlider.value))
+        musicVolumeLabel.text?.append(" %")
         
-        musicRateSlider.value = player.rate
+        //setting pitch
+        changeAudio.pitch = 1.0
+        musicPitchSlider.value = changeAudio.pitch
+        musicPitchSlider.minimumValue = -1200
+        musicPitchSlider.maximumValue = 1200
+        musicPitchLabel.text = "1 c"
+        
+        //setting rate
+        changeAudio.rate = 1.0
+        musicRateSlider.value = changeAudio.rate
         musicRateSlider.minimumValue = 0.5
         musicRateSlider.maximumValue = 2.0
-        musicRateLabel.text = String(player.rate)
-        musicRateLabel.text?.append("x")
+        musicRateLabel.text = String(changeAudio.rate)
+        musicRateLabel.text?.append(" x")
         
+        //applying blur to musicImageView
         let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
-        blurEffectView.alpha = 0.95
+        blurEffectView.alpha = 0.9
         blurEffectView.frame = musicImageView.bounds
         musicImageView.addSubview(blurEffectView)
         
+        //cropping circular image of smallMusicImageView
         smallMusicImageView.layer.borderWidth = 1
         smallMusicImageView.layer.masksToBounds = false
         smallMusicImageView.layer.borderColor = UIColor.white().cgColor
         smallMusicImageView.layer.cornerRadius = smallMusicImageView.frame.height/2
         smallMusicImageView.clipsToBounds = true
-
+        
+        //timer to update musicTimeSlider
         _ = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(ViewController.updateMusicTimeSlider), userInfo: nil, repeats: true)
     }
 
