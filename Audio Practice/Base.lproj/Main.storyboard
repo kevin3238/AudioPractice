@@ -188,10 +188,19 @@
                                 <color key="textColor" red="0.1176470588" green="0.76078431369999999" blue="0.29803921570000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ufE-5T-ROA">
+                                <frame key="frameInset" minX="308" minY="60" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="iTunes"/>
+                                <connections>
+                                    <action selector="openiTunes:" destination="BYZ-38-t0r" eventType="touchUpInside" id="tPb-xm-ZxR"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.10980392156862745" green="0.10588235294117647" blue="0.13725490196078433" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <connections>
+                        <outlet property="iTunesButton" destination="ufE-5T-ROA" id="BkB-xe-twF"/>
                         <outlet property="loopMusicButtonIcon" destination="YHq-9Q-kJE" id="0BB-mO-nEu"/>
                         <outlet property="musicArtistLabel" destination="JRp-x6-i7B" id="4jd-TU-CDf"/>
                         <outlet property="musicCurrentTime" destination="n17-Gu-CQY" id="iOC-tl-fZG"/>

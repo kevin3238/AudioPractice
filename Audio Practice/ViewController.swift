@@ -20,6 +20,7 @@ class ViewController: UIViewController, AVAudioRecorderDelegate, MPMediaPickerCo
     var audioFile:AVAudioFile!
     var changeAudio:AVAudioUnitTimePitch!
     
+    var buffer:AVAudioPCMBuffer!
     var nodeTime:AVAudioTime!
     var playerTime:AVAudioTime!
     var currentTimeMusic:Float!
@@ -58,11 +59,39 @@ class ViewController: UIViewController, AVAudioRecorderDelegate, MPMediaPickerCo
     @IBOutlet var smallMusicImageView: UIImageView!
     
     //MediaPicker vars
-//    var mediaPicker: MPMediaPickerController?
-//    var myMusicPlayer: MPMusicPlayerController?
-//    let masterVolumeSlider: MPVolumeView = MPVolumeView()
+    @IBOutlet var iTunesButton: UIButton!
+    var mediaPicker: MPMediaPickerController?
+    var myMusicPlayer: MPMusicPlayerController?
+    let masterVolumeSlider: MPVolumeView = MPVolumeView()
 
-    //func mediaPicker(mediaPicker:)
+    func mediaPicker(mediaPicker: MPMediaPickerController, didPickMediaItems mediaItemCollection: MPMediaItemCollection) {
+        myMusicPlayer = MPMusicPlayerController.applicationMusicPlayer()
+        if let mplayer = myMusicPlayer {
+            mplayer.beginGeneratingPlaybackNotifications()
+            mplayer.setQueue(with: mediaItemCollection)
+            mplayer.play()
+            mediaPicker.dismiss(animated: true, completion: nil)
+        }
+    }
+    
+    func displayMediaPickerAndPlayItem() {
+        mediaPicker = MPMediaPickerController(mediaTypes: .anyAudio)
+        
+        if let picker = mediaPicker {
+            print("Successfully instantiaed a media picker")
+            picker.delegate = self
+            view.addSubview(picker.view)
+            present(picker, animated: true, completion: nil)
+        }
+        else {
+            print("Could not instantiate media picker")
+        }
+    }
+    
+    //Opens Music App
+    @IBAction func openiTunes(_ sender: AnyObject) {
+        displayMediaPickerAndPlayItem()
+    }
     
     @IBAction func playPauseButton(_ sender: UIButton) {
         if player.isPlaying {
@@ -83,7 +112,7 @@ class ViewController: UIViewController, AVAudioRecorderDelegate, MPMediaPickerCo
             muteVolumeButtonIcon.setImage(#imageLiteral(resourceName: "white sound"), for: [])
             isMuted = false
         } else {
-            musicVolumeLabel.text = "0"
+            musicVolumeLabel.text = "0 %"
             musicVolumeSlider.value = 0
             lastVolume = player.volume
             player.volume = 0
@@ -111,24 +140,17 @@ class ViewController: UIViewController, AVAudioRecorderDelegate, MPMediaPickerCo
 //    }
     
     @IBAction func rewindMusicButton(_ sender: UIButton) {
-        var nodetime: AVAudioTime  = player.lastRenderTime!
-        let playerTime: AVAudioTime = player.playerTime(forNodeTime: nodetime)!
-        var sampleRate = playerTime.sampleRate
+        let newsampletime = AVAudioFramePosition(playerTime.sampleRate * Double(musicTimeSlider.value))
         
-        var newsampletime = AVAudioFramePosition(sampleRate * Double(musicTimeSlider.value))
-        
-        var length = Float(endTimeMusic!)
-        var framestoplay = AVAudioFrameCount(Float(playerTime.sampleRate) * length)
+        let length = Float(endTimeMusic!)
+        let framestoplay = AVAudioFrameCount(Float(playerTime.sampleRate) * length)
         
         player.stop()
         
         if framestoplay > 100 {
             player.scheduleSegment(audioFile, startingFrame: newsampletime, frameCount: framestoplay, at: nil,completionHandler: nil)
         }
-        
         player.play()
-        
-        
     }
     
 //    @IBAction func recordMusicButton(_ sender: UIButton) {
@@ -221,21 +243,30 @@ class ViewController: UIViewController, AVAudioRecorderDelegate, MPMediaPickerCo
     @IBAction func musicTime(_ sender: UISlider) {
         
         let newsampletime = AVAudioFramePosition(playerTime.sampleRate * Double(musicTimeSlider.value))
+//        print (endTimeMusic)
+//        print(musicTimeSlider.value)
         let length = Float(endTimeMusic!) - musicTimeSlider.value
         let framestoplay = AVAudioFrameCount(Float(playerTime.sampleRate) * length)
         currentTimeMusic = Float(Double(newsampletime) / playerTime.sampleRate)
+        print(currentTimeMusic)
+        musicTimeSlider.value = Float(currentTimeMusic)
         player.stop()
         
         if framestoplay > 100 {
+            let newAudioTime = AVAudioTime(sampleTime: newsampletime, atRate: playerTime.sampleRate)
+            print (newAudioTime)
+//            print(newAudioTime)
+//            let buffer2 = AVAudioPCMBuffer(pcmFormat: audioFile!.processingFormat, frameCapacity: framestoplay)
+//            self.player.scheduleBuffer(buffer2, at: nil, options: AVAudioPlayerNodeBufferOptions.interrupts, completionHandler: nil)
+//            player.scheduleSegment(audioFile, startingFrame: newsampletime, frameCount: framestoplay, at: nil,completionHandler: nil)
+//            player.playerTime(forNodeTime: newAudioTime)
+            player.prepare(withFrameCount: framestoplay)
             player.scheduleSegment(audioFile, startingFrame: newsampletime, frameCount: framestoplay, at: nil,completionHandler: nil)
+            updateMusicTimeSlider(hehe: newAudioTime)
+//            player.play(at: newAudioTime)
         }
-        
         player.play()
-        print(currentTimeMusic)
-//        musicTimeSlider.value = currentTimeMusic
-        
-        print(player.lastRenderTime)
-        
+//        print (currentTimeMusic)
         let currentTimeMin:Int = Int(currentTimeMusic)/60
         let currentTimeSec:Int = Int(currentTimeMusic) % 60
         
@@ -266,17 +297,49 @@ class ViewController: UIViewController, AVAudioRecorderDelegate, MPMediaPickerCo
     
     
     // slider updates as the music progresses
-    func updateMusicTimeSlider() {
+    func updateMusicTimeSlider(hehe:AVAudioTime) {
+        if (currentTimeMusic == endTimeMusic && isRepeat == true) {
+            if (isRepeat) {
+                let newsampletime = AVAudioFramePosition(playerTime.sampleRate * Double(musicTimeSlider.value))
+                
+                let length = Float(endTimeMusic!)
+                let framestoplay = AVAudioFrameCount(Float(playerTime.sampleRate) * length)
+                
+                player.stop()
+                
+                if framestoplay > 100 {
+                    player.scheduleSegment(audioFile, startingFrame: newsampletime, frameCount: framestoplay, at: nil,completionHandler: nil)
+                }
+                player.play()
+            } else if (currentTimeMusic == endTimeMusic && isRepeat == false) {
+                let newsampletime = AVAudioFramePosition(playerTime.sampleRate * Double(musicTimeSlider.value))
+                
+                let length = Float(endTimeMusic!)
+                let framestoplay = AVAudioFrameCount(Float(playerTime.sampleRate) * length)
+                
+                player.stop()
+                
+                if framestoplay > 100 {
+                    player.scheduleSegment(audioFile, startingFrame: newsampletime, frameCount: framestoplay, at: nil,completionHandler: nil)
+                }
+            }
+        }
+
         if (player.isPlaying) {
             playPauseButtonIcon.setImage(#imageLiteral(resourceName: "white pause 2"), for: [])
             nodeTime = self.player.lastRenderTime
             playerTime = player.playerTime(forNodeTime: nodeTime)
+//            print (Double(playerTime.sampleTime))
             currentTimeMusic = Float(Double(playerTime.sampleTime) / playerTime.sampleRate)
         } else {
             playPauseButtonIcon.setImage(#imageLiteral(resourceName: "white play"), for: [])
         }
-        musicTimeSlider.value = Float (currentTimeMusic)
+         musicTimeSlider.value = Float (currentTimeMusic)
         
+        
+        
+        
+        //display
         let currentTimeMin:Int = Int(currentTimeMusic)/60
         let currentTimeSec:Int = Int(currentTimeMusic) % 60
         
@@ -318,7 +381,7 @@ class ViewController: UIViewController, AVAudioRecorderDelegate, MPMediaPickerCo
         let url = NSURL.fileURL(withPath: audioPath)
         
         audioFile = try? AVAudioFile(forReading: url)
-        let buffer = AVAudioPCMBuffer(pcmFormat: audioFile!.processingFormat, frameCapacity: AVAudioFrameCount(audioFile!.length))
+        buffer = AVAudioPCMBuffer(pcmFormat: audioFile!.processingFormat, frameCapacity: AVAudioFrameCount(audioFile!.length))
         do {
             try audioFile!.read(into: buffer)
         } catch _ {
@@ -343,12 +406,14 @@ class ViewController: UIViewController, AVAudioRecorderDelegate, MPMediaPickerCo
         
         nodeTime = self.player.lastRenderTime
         playerTime = player.playerTime(forNodeTime: nodeTime)
-        currentTimeMusic = Float(Double(playerTime.sampleTime) / playerTime.sampleRate)
-        print (currentTimeMusic)
+        //currentTimeMusic = Float(Double(playerTime.sampleTime) / playerTime.sampleRate)
+        //print (currentTimeMusic)
         
         endTimeMusic = Float (Float(audioFile.length) / Float(playerTime.sampleRate))
         
-//        player.pause()
+        player.pause()
+        
+        currentTimeMusic = 0.0
         
         musicTitleLabel.text = "ACA Bridge Fall 2014"
         musicArtistLabel.text = "TungFuHustle"
@@ -384,46 +449,12 @@ class ViewController: UIViewController, AVAudioRecorderDelegate, MPMediaPickerCo
         musicEndTime.text?.append(".")
         musicEndTime.text?.append(endTimeMil)
         
-        //setting music time
-        musicTimeSlider.maximumValue = Float(endTimeMusic)
-        musicTimeSlider.value = 0.0
-    
-        //setting volume
-        player.volume = 0.5
-        musicVolumeSlider.minimumValue = 0
-        musicVolumeSlider.maximumValue = 100
-        musicVolumeSlider.value = (player.volume * 100.0)
-        musicVolumeLabel.text = String(Int(musicVolumeSlider.value))
-        musicVolumeLabel.text?.append(" %")
-        
-        //setting pitch
-        changeAudio.pitch = 1.0
-        musicPitchSlider.value = changeAudio.pitch
-        musicPitchSlider.minimumValue = -1200
-        musicPitchSlider.maximumValue = 2400
-        musicPitchLabel.text = "1 c"
-        
-        //setting rate
-        changeAudio.rate = 1.0
-        musicRateSlider.value = changeAudio.rate
-        musicRateSlider.minimumValue = 0.5
-        musicRateSlider.maximumValue = 2.0
-        musicRateLabel.text = String(changeAudio.rate)
-        musicRateLabel.text?.append(" x")
-        
-        //applying blur to musicImageView
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
-        let blurEffectView = UIVisualEffectView(effect: blurEffect)
-        blurEffectView.alpha = 0.95
-        blurEffectView.frame = musicImageView.bounds
-        musicImageView.addSubview(blurEffectView)
-        
-        //cropping circular image of smallMusicImageView
-        smallMusicImageView.layer.borderWidth = 1
-        smallMusicImageView.layer.masksToBounds = false
-        smallMusicImageView.layer.borderColor = UIColor.white().cgColor
-        smallMusicImageView.layer.cornerRadius = smallMusicImageView.frame.height/2
-        smallMusicImageView.clipsToBounds = true
+        setMusictime()
+        setVolume()
+        setPitch()
+        setRate()
+        applyBlur()
+        cropCircularImageView()
         
         //timer to update musicTimeSlider
         _ = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(ViewController.updateMusicTimeSlider), userInfo: nil, repeats: true)
@@ -433,5 +464,59 @@ class ViewController: UIViewController, AVAudioRecorderDelegate, MPMediaPickerCo
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    //setting music time
+    func setMusictime() {
+        musicTimeSlider.maximumValue = Float(endTimeMusic)
+        musicTimeSlider.value = 0.0
+    }
+    
+    //setting volume
+    func setVolume() {
+        player.volume = 0.5
+        musicVolumeSlider.minimumValue = 0
+        musicVolumeSlider.maximumValue = 100
+        musicVolumeSlider.value = (player.volume * 100.0)
+        musicVolumeLabel.text = String(Int(musicVolumeSlider.value))
+        musicVolumeLabel.text?.append(" %")
+    }
+    
+    //applying blur to musicImageView
+    func applyBlur () {
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.alpha = 0.95
+        blurEffectView.frame = musicImageView.bounds
+        musicImageView.addSubview(blurEffectView)
+    }
+    
+    //cropping circular image of smallMusicImageView
+    func cropCircularImageView () {
+        smallMusicImageView.layer.borderWidth = 1
+        smallMusicImageView.layer.masksToBounds = false
+        smallMusicImageView.layer.borderColor = UIColor.white().cgColor
+        smallMusicImageView.layer.cornerRadius = smallMusicImageView.frame.height/2
+        smallMusicImageView.clipsToBounds = true
+    }
+    
+    //setting rate
+    func setRate () {
+        changeAudio.rate = 1.0
+        musicRateSlider.value = changeAudio.rate
+        musicRateSlider.minimumValue = 0.5
+        musicRateSlider.maximumValue = 2.0
+        musicRateLabel.text = String(changeAudio.rate)
+        musicRateLabel.text?.append(" x")
+    }
+    
+    //setting pitch
+    func setPitch () {
+        changeAudio.pitch = 1.0
+        musicPitchSlider.value = changeAudio.pitch
+        musicPitchSlider.minimumValue = -1200
+        musicPitchSlider.maximumValue = 1200
+        musicPitchLabel.text = "1 c"
+    }
+    
 }
 

@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		6130F5FB1D30239B006E016C /* white sound.png in Resources */ = {isa = PBXBuildFile; fileRef = 6130F5FA1D30239B006E016C /* white sound.png */; };
 		6130F5FD1D30246B006E016C /* white mute.png in Resources */ = {isa = PBXBuildFile; fileRef = 6130F5FC1D30246B006E016C /* white mute.png */; };
+		61384C661D46CF82005742B2 /* Audio Segment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61384C651D46CF82005742B2 /* Audio Segment.swift */; };
+		61384C681D46D8F2005742B2 /* AudioTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61384C671D46D8F2005742B2 /* AudioTrack.swift */; };
 		615CE00B1D305C6C002204BE /* dance icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 615CE00A1D305C6C002204BE /* dance icon.png */; };
 		615CE00D1D31CEAD002204BE /* white clock.png in Resources */ = {isa = PBXBuildFile; fileRef = 615CE00C1D31CEAD002204BE /* white clock.png */; };
 		615CE00F1D32069B002204BE /* white music.png in Resources */ = {isa = PBXBuildFile; fileRef = 615CE00E1D32069B002204BE /* white music.png */; };
@@ -50,6 +52,8 @@
 /* Begin PBXFileReference section */
 		6130F5FA1D30239B006E016C /* white sound.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "white sound.png"; sourceTree = "<group>"; };
 		6130F5FC1D30246B006E016C /* white mute.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "white mute.png"; sourceTree = "<group>"; };
+		61384C651D46CF82005742B2 /* Audio Segment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Audio Segment.swift"; sourceTree = "<group>"; };
+		61384C671D46D8F2005742B2 /* AudioTrack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioTrack.swift; sourceTree = "<group>"; };
 		615CE00A1D305C6C002204BE /* dance icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dance icon.png"; sourceTree = "<group>"; };
 		615CE00C1D31CEAD002204BE /* white clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "white clock.png"; sourceTree = "<group>"; };
 		615CE00E1D32069B002204BE /* white music.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "white music.png"; sourceTree = "<group>"; };
@@ -134,6 +138,8 @@
 			children = (
 				61F2DBAA1D3010870094867B /* AppDelegate.swift */,
 				61F2DBAC1D3010870094867B /* ViewController.swift */,
+				61384C671D46D8F2005742B2 /* AudioTrack.swift */,
+				61384C651D46CF82005742B2 /* Audio Segment.swift */,
 				61F2DBAE1D3010870094867B /* Main.storyboard */,
 				61F2DBBC1D3010CD0094867B /* Tyga - Hijack.mp3 */,
 				615CE0181D32C3C7002204BE /* aca fall 2014.mp3 */,
@@ -279,6 +285,8 @@
 			files = (
 				61F2DBAD1D3010870094867B /* ViewController.swift in Sources */,
 				61F2DBAB1D3010870094867B /* AppDelegate.swift in Sources */,
+				61384C681D46D8F2005742B2 /* AudioTrack.swift in Sources */,
+				61384C661D46CF82005742B2 /* Audio Segment.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
